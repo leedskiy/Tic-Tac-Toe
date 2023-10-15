@@ -24,14 +24,29 @@
                         </h2>
                     </div>
                 </div>
-                <div class="header__right">
+                <div class="header__right header__right-not-active">
+                    <p class="header__score">
+                        score: <span class="score__player1">0</span> - <span class="score__player2">0</span>
+                    </p>
+
+                    <button type="button" class="header__restartButton">
+                        <p class="restartButton__text buttext">
+                            Restart
+                        </p>
+                    </button>
                 </div>
             </div>
         </div>
 
         <div class="main">
             <div class="main__container __container">
-                <div class="gameboard">
+                <button type="button" class="startButton">
+                    <p class="startButton__text buttext">
+                        Start a new game
+                    </p>
+                </button>
+
+                <div class="gameboard gameboard-not-active">
                     <div class="gameboard__container">
                         <button class="gameboard__button" data-index="0"></button>
                         <button class="gameboard__button" data-index="1"></button>

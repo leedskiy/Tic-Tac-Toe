@@ -33,12 +33,33 @@ function createPlayer(sign) {
 };
 
 const displayController = (function () {
-    // const startButton = document.querySelectorAll('.startButton');
+    const headerRight = document.querySelector('.header__right');
+    const mainContainer = document.querySelector('.main__container');
+    const startButton = document.querySelector('.startButton');
+    const gb = document.querySelector('.gameboard');
     const gameboardButtons = document.querySelectorAll('.gameboard__button');
 
-    // startButton.addEventListener('click', (e) => {
-    //     startButton.classList.
-    // });
+    startButton.style.cssText = `transition: background-color 0.4s, opacity 0.3s;`;
+    gb.style.cssText = `transition: opacity 1s;`;
+    headerRight.style.cssText = `transition: opacity 1s;`;
+
+    startButton.addEventListener('click', (e) => {
+        startButton.style.opacity = 0;
+        startButton.addEventListener('transitionend', () => {
+            startButton.style.display = 'none';
+        }, { once: true });
+
+        setTimeout(() => {
+            gb.classList.toggle('gameboard-not-active');
+            headerRight.classList.toggle('header__right-not-active');
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    gb.style.opacity = 1;
+                    headerRight.style.opacity = 1;
+                })
+            });
+        }, 500);
+    });
 
     gameboardButtons.forEach(elem => {
         elem.addEventListener('click', (e) => {
@@ -49,7 +70,7 @@ const displayController = (function () {
 
     const updateBoard = () => {
         for (let i = 0; i < 9; i++) {
-            gameboardButtons[i].innerHTML = gameBoard.getField(i);
+            gameboardButtons[i].innerHTML = gameBoard.getField(i); // updates DOM board according to js board
         }
     }
 
@@ -104,11 +125,11 @@ const gameController = (function () {
 
             for (let i = 0; i < winCombinations.length && !(row3 === 3); i++) {
                 for (let j = 0; j < winCombinations[i].length; j++) {
-                    // if index from win combination is in indexes of curr sign, then ++
+                    // if index from win combination is in indexes of curr sign, then ++row3
                     if ((indexesOfCurr.filter((x) => x === winCombinations[i][j]).length) === 1) {
                         ++row3;
                     }
-                    // if index from win combination is not in indexes of curr sign, then it is not a true combination
+                    // if index from win combination is not in indexes of curr sign, then it is not a correct combination
                     else {
                         row3 = 0;
                         break;
@@ -128,6 +149,3 @@ const gameController = (function () {
 
     return { makeAPlay, checkWin, getSign }
 })();
-
-// a = [1, 10, 15, 2];
-// console.log((a.sort()).includes("[1,2]"));

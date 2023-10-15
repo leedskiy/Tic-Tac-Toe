@@ -95,7 +95,7 @@ p {
 }
 
 .buttext {
-    color: #000000;
+    color: #ffffff;
     transition: color 0.6s;
 }
 
@@ -104,7 +104,7 @@ p {
     transition: color 0.6s;
 }
 
-.link:hover a {
+.buttext:hover, .link:hover a {
     color: #b8b8b8;
     transition: color 0.6s;
 }
@@ -224,6 +224,43 @@ body {
 }
 
 .header__right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    opacity: 0;
+}
+
+.header__right-not-active {
+    display: none;
+}
+
+.header__score {
+    color:rgb(255, 255, 255)
+}
+
+.score__player1 {
+}
+
+.score__player2 {
+}
+
+.header__restartButton {
+    padding: 10px 20px;
+    background-color: unset;
+    background-color: #2f2f2f;
+    border-radius: 7px;
+    border: 2px solid rgba(0, 0, 0, 0);
+}
+
+.header__restartButton:hover {
+    background-color: #414141;
+    transition: background-color 0.4s;
+}
+
+.restartButton:active {
+    border: 2px solid #282828;
+    transition: 0.2s;
 }
 
 /*------------------------main------------------------*/
@@ -241,7 +278,39 @@ body {
     justify-content: center;
 }
 
+.startButton {
+    padding: 20px 30px;
+    background-color: unset;
+    background-color: #2f2f2f;
+    border-radius: 7px;
+    border: 2px solid rgba(0, 0, 0, 0);
+    /* transition: background-color 0.4s; */
+}
+
+.startButton:hover {
+    background-color: #414141;
+    transform: scale(1.01);
+    transition: background-color 0.4s, transform 0.4s;
+}
+
+.startButton:active {
+    border: 2px solid #282828;
+    transform: scale(1);
+    transition: 0.2s;
+}
+
+.startButton__text {
+}
+
+/*------------------------main gameboard------------------------*/
+
 .gameboard {
+    display: block;
+    opacity: 0;
+}
+
+.gameboard-not-active {
+    display: none;
 }
 
 .gameboard__container {
