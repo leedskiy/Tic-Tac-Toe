@@ -73,3 +73,188 @@ h1, h2, h3, h4, h5, h6 {
     font-size: inherit;
     font-weight: 400;
 }
+
+/* temporary version */
+
+/*------------------------general------------------------*/
+
+h1 {
+    font-size: 3rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+}
+
+h3 {
+    font-size: 1.8rem;
+}
+
+p {
+    font-size: 1.4rem;
+}
+
+.buttext {
+    color: #000000;
+    transition: color 0.6s;
+}
+
+.link a {
+    color: #ffffff;
+    transition: color 0.6s;
+}
+
+.link:hover a {
+    color: #b8b8b8;
+    transition: color 0.6s;
+}
+
+.link::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    border-radius: 10px;
+    bottom: -7px;
+    left: 0;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform 0.4s;
+    transition: transform 0.4s, background-color 0.6s;
+}
+  
+.link:hover::before {
+    transform-origin: left;
+    transform: scaleX(1);
+    transition: transform 0.4s, background-color 0.6s;
+}
+  
+.link::before {
+    background-color: #ffffff;
+}
+  
+.link:hover::before {
+    background-color: #b8b8b8;
+}
+
+.hbutton:hover .buttext {
+    color: #3f3f3f;
+    transition: color 0.6s;
+}
+
+body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    overflow: hidden;
+}
+
+.__container {
+    max-width: 1420px;
+    padding: 0 40px;
+    margin: 0 auto;
+}
+
+@media(max-width: 426px){
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    h2 {
+        font-size: 1.8rem;
+    }
+    
+    h3 {
+        font-size: 1.4rem;
+    }
+    
+    p {
+        font-size: 1.2rem;
+    }
+  
+    .__container {
+        padding: 0 30px;
+    }
+}
+  
+@media(max-width: 350px){
+    h1 {
+        font-size: 2.3rem;
+    }
+}
+
+/*------------------------header------------------------*/
+
+.header {
+    width: 100%;
+    height: 80px;
+    background-color: #2f2f2f;
+    box-shadow: 0 1px 7px rgba(0, 0, 0, 0.2);
+}
+
+.header__container {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+}
+
+.header__left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header__logo {
+}
+
+.logo__text {
+}
+
+.logo__link {
+    color: #ffffff;
+}
+
+.header__right {
+}
+
+/*------------------------main------------------------*/
+
+.main {
+    flex: 1 1 auto;
+}
+
+.main__container {
+}
+
+/*------------------------footer------------------------*/
+
+.footer {
+    width: 100%;
+    box-shadow: 0 1px 7px rgba(0, 0, 0, 0.2);
+    height: 70px;
+    background-color: #2f2f2f;
+}
+
+.footer__container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.footer__text {
+    position: relative;
+}
+
+.footer__link {
+}
