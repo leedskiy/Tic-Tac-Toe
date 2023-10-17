@@ -36,11 +36,11 @@ const displayController = (function () {
     const headerRight = document.querySelector('.header__right');
     const mainContainer = document.querySelector('.main__container');
     const startButton = document.querySelector('.startButton');
-    const gb = document.querySelector('.gameboard');
+    const gameContent = document.querySelector('.gameContent');
     const gameboardButtons = document.querySelectorAll('.gameboard__button');
 
     startButton.style.cssText = `transition: background-color 0.4s, opacity 0.3s;`;
-    gb.style.cssText = `transition: opacity 1s;`;
+    gameContent.style.cssText = `transition: opacity 1s;`;
     headerRight.style.cssText = `transition: opacity 1s;`;
 
     startButton.addEventListener('click', (e) => {
@@ -50,11 +50,11 @@ const displayController = (function () {
         }, { once: true });
 
         setTimeout(() => {
-            gb.classList.toggle('gameboard-not-active');
+            gameContent.classList.toggle('gameContent-not-active');
             headerRight.classList.toggle('header__right-not-active');
             requestAnimationFrame(function () {
                 requestAnimationFrame(function () {
-                    gb.style.opacity = 1;
+                    gameContent.style.opacity = 1;
                     headerRight.style.opacity = 1;
                 })
             });
