@@ -34,10 +34,22 @@ function createPlayer(sign) {
 
 const displayController = (function () {
     const headerRight = document.querySelector('.header__right');
+    const headerScore = document.querySelector('.header__score');
     const mainContainer = document.querySelector('.main__container');
     const startButton = document.querySelector('.startButton');
     const gameContent = document.querySelector('.gameContent');
     const gameboardButtons = document.querySelectorAll('.gameboard__button');
+
+    window.addEventListener("resize", () => {
+        let elemWidth = document.documentElement.clientWidth;
+
+        if (elemWidth < 370) {
+            headerScore.innerHTML = `score:<br/><span class="score__player1">0</span> - <span class="score__player2">0</span>`;
+        }
+        else {
+            headerScore.innerHTML = `score: <span class="score__player1">0</span> - <span class="score__player2">0</span>`;
+        }
+    });
 
     startButton.style.cssText = `transition: background-color 0.4s, opacity 0.3s;`;
     gameContent.style.cssText = `transition: opacity 1s;`;

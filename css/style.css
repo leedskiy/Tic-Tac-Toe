@@ -215,11 +215,11 @@ body {
 .header__logo {
 }
 
-.logo__text {
+.logo__pic {
 }
 
-.logo__link {
-    color: #ffffff;
+.logo {
+    width: 70px;
 }
 
 .header__right {
@@ -260,6 +260,16 @@ body {
 .restartButton:active {
     border: 2px solid #282828;
     transition: 0.2s;
+}
+
+@media(max-width: 470px){
+    .logo {
+        width: 50px;
+    }
+
+    .header__restartButton {
+        padding: 5px 10px;
+    }
 }
 
 /*------------------------main------------------------*/
@@ -351,11 +361,12 @@ body {
 }
 
 .gameboard__button {
-    border: 2px solid rgb(0, 0, 0);
+    border: 2px solid #000000;
     background-color: #ffffff;
     transition: 0.1s;
     font-size: 6rem;
     padding: 0 0 15px 0;
+    color: #FFA836;
 }
 
 .gameboard__button:hover {
