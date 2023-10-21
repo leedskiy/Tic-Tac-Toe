@@ -238,6 +238,10 @@ body {
     color:rgb(255, 255, 255);
 }
 
+.header__score-no-wrap {
+    white-space: nowrap;
+}
+
 .score__player1 {
 }
 
@@ -250,6 +254,7 @@ body {
     background-color: #2f2f2f;
     border-radius: 7px;
     border: 2px solid rgba(0, 0, 0, 0);
+    transition: background-color 0.4s;
 }
 
 .header__restartButton:hover {
@@ -285,6 +290,32 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.gameText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.gameText-not-active {
+    display: none;
+}
+
+.gameText__title {
+    color: #FFA836;
+}
+
+.gameText__body-no-wrap {
+    white-space: nowrap;
+}
+
+.gameText__body {
 }
 
 .startButton {
@@ -294,6 +325,10 @@ body {
     border-radius: 7px;
     border: 2px solid rgba(0, 0, 0, 0);
     /* transition: background-color 0.4s; */
+}
+
+.startButton-not-active {
+    display: none;
 }
 
 .startButton:hover {

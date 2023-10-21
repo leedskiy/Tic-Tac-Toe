@@ -39,26 +39,14 @@ const displayController = (function () {
     const scorePlayer1 = document.querySelector('.score__player1');
     const scorePlayer2 = document.querySelector('.score__player2');
     const restartButton = document.querySelector('.header__restartButton');
+    const gameText = document.querySelector('.gameText');
     const startButton = document.querySelector('.startButton');
     const gameContentAnnouncement = document.querySelector('.gameContent__announcement');
     const gameContent = document.querySelector('.gameContent');
     const gameboardButtons = document.querySelectorAll('.gameboard__button');
 
-    window.addEventListener("resize", () => {
-        let elemWidth = document.documentElement.clientWidth;
-
-        if (elemWidth < 370) {
-            headerScore.innerHTML = `score:<br/><span class="score__player1">${gameController.getWins()[0]}
-                </span> - <span class="score__player2">${gameController.getWins()[1]}</span>`;
-        }
-        else {
-            headerScore.innerHTML = `score: <span class="score__player1">${gameController.getWins()[0]}
-                </span> - <span class="score__player2">${gameController.getWins()[1]}</span>`;
-        }
-    });
-
-    startButton.style.cssText = `transition: background-color 0.4s, opacity 0.3s;`;
-    gameContent.style.cssText = `transition: opacity 1s;`;
+    gameText.style.cssText = `transition: opacity 0.3s;`;
+    startButton.style.cssText = `transition: background-color 0.4s, opacity 0.3s, transform 0.2s;`;
     headerRight.style.cssText = `transition: opacity 1s;`;
     headerScore.style.cssText = `transition: opacity 1s;`;
 
@@ -67,10 +55,21 @@ const displayController = (function () {
     });
 
     startButton.addEventListener('click', (e) => {
+        gameBoard.reset();
+        gameController.reset();
+        turnAnnounce(gameController.getCurrSign());
+        updateScore();
+        updateBoard();
+
+        gameText.style.opacity = 0;
         startButton.style.opacity = 0;
+
         startButton.addEventListener('transitionend', () => {
-            startButton.style.display = 'none';
+            gameText.classList.toggle('gameText-not-active');
+            startButton.classList.toggle('startButton-not-active');
         }, { once: true });
+
+        gameContent.style.cssText = `transition: opacity 1s;`;
 
         setTimeout(() => {
             gameContent.classList.toggle('gameContent-not-active');
@@ -90,16 +89,20 @@ const displayController = (function () {
         });
     });
 
-    const updateScore = () => {
-        let wins = gameController.getWins();
-        scorePlayer1.innerHTML = wins[0];
-        scorePlayer2.innerHTML = wins[1];
+    const updatePageTitle = (wins) => {
         if (wins[0] === 0 && wins[1] === 0) {
             pageTitle.textContent = `Tic Tac Toe`;
         }
         else {
-            pageTitle.textContent = `Tic Tac Toe | ${wins[0]} : ${wins[1]}`;
+            pageTitle.textContent = `Tic Tac Toe | ${wins[0]} - ${wins[1]}`;
         }
+    }
+
+    const updateScore = () => {
+        let wins = gameController.getWins();
+        scorePlayer1.innerHTML = wins[0];
+        scorePlayer2.innerHTML = wins[1];
+        updatePageTitle(wins);
     }
 
     const updateBoard = () => {
@@ -130,6 +133,19 @@ const displayController = (function () {
     }
 
     const displayWin = (sign) => {
+        let wins = gameController.getWins();
+        updatePageTitle(wins);
+
+        gameText.innerHTML = `
+        <h2 class="gameText__title">
+            Tic Tac Toe
+        </h2>
+        <p class="gameText__body">
+            ${sign.toUpperCase()} won the game <span class="gameText__body-no-wrap">
+            with score: ${wins[0]} - ${wins[1]}</span>
+        </p>
+        `;
+
         setTimeout(() => {
             gameContent.style.cssText = `transition: opacity 1s;`;
             headerRight.style.cssText = `transition: opacity 1s;`;
@@ -141,6 +157,19 @@ const displayController = (function () {
                 headerRight.classList.toggle('header__right-not-active');
                 gameContent.classList.toggle('gameContent-not-active');
             }, { once: true });
+
+
+            setTimeout(() => {
+                gameText.classList.toggle('gameText-not-active');
+                startButton.classList.toggle('startButton-not-active');
+
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () {
+                        gameText.style.opacity = 1;
+                        startButton.style.opacity = 1;
+                    })
+                });
+            }, 1000);
         }, 500)
     }
 
@@ -171,7 +200,6 @@ const gameController = (function () {
             return turn % 2 == 0 ? player1.getSign() : player2.getSign(); // get curr sign (even = x)
         }
         else {
-            console.log(turn % 2 == 0 ? player2.getSign() : player1.getSign());
             return turn % 2 == 0 ? player2.getSign() : player1.getSign(); // get curr sign (even = o)
         }
     }
@@ -199,12 +227,15 @@ const gameController = (function () {
         }
     }
 
-    const restartGame = () => {
+    const reset = () => {
         turn = 0;
         roundCount = 1;
         wins1 = 0;
         wins2 = 0;
+    }
 
+    const restartGame = () => {
+        reset()
         handleRound();
     }
 
@@ -285,5 +316,5 @@ const gameController = (function () {
         }
     }
 
-    return { getRoundCount, getWins, getCurrSign, restartGame, checkWin, makeAPlay }
+    return { getRoundCount, getWins, getCurrSign, reset, restartGame, checkWin, makeAPlay }
 })();
