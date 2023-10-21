@@ -62,10 +62,7 @@ const displayController = (function () {
     headerScore.style.cssText = `transition: opacity 1s;`;
 
     restartButton.addEventListener('click', (e) => {
-        gmConAndHScoreBlink();
-        setTimeout(() => {
-            gameController.restartGame();
-        }, 1000);
+        gameController.restartGame();
     });
 
     startButton.addEventListener('click', (e) => {
@@ -166,7 +163,31 @@ const gameController = (function () {
             return turn % 2 == 0 ? player1.getSign() : player2.getSign(); // get curr sign (even = x)
         }
         else {
+            console.log(turn % 2 == 0 ? player2.getSign() : player1.getSign());
             return turn % 2 == 0 ? player2.getSign() : player1.getSign(); // get curr sign (even = o)
+        }
+    }
+
+    const handleRound = () => {
+        displayController.updateBoard();
+        setTimeout(() => {
+            displayController.gmConAndHScoreBlink();
+        }, 600);
+
+        if (wins1 === 2) {
+            displayController.displayWin('x');
+        }
+        else if (wins2 === 2) {
+            displayController.displayWin('o');
+        }
+        else {
+            setTimeout(() => { // next round
+                turn = 0;
+                displayController.turnAnnounce(getCurrSign());
+                displayController.updateScore();
+                gameBoard.reset();
+                displayController.updateBoard(); // clear board
+            }, 1500);
         }
     }
 
@@ -176,10 +197,7 @@ const gameController = (function () {
         wins1 = 0;
         wins2 = 0;
 
-        displayController.turnAnnounce(getCurrSign());
-        displayController.updateScore();
-        gameBoard.reset();
-        displayController.updateBoard();
+        handleRound();
     }
 
     const checkWin = () => {
@@ -230,72 +248,27 @@ const gameController = (function () {
             if (gameBoard.getField(index) == "") {
                 gameBoard.setField(index, getCurrSign());
 
-                if (checkWin()) {
+                if (checkWin()) { // someone won round
                     if (getCurrSign() == 'x') { // round win for x
                         ++wins1;
                         displayController.roundWinAnnounce('x');
-                        ++turn;
-                        displayController.updateBoard();
-                        setTimeout(() => {
-                            displayController.gmConAndHScoreBlink();
-                        }, 600);
-
-                        if (wins1 !== 2) {
-                            setTimeout(() => {
-                                displayController.turnAnnounce('o'); // next round
-                                displayController.updateScore();
-                                gameBoard.reset();
-                                displayController.updateBoard(); // clear board
-                                turn = 0;
-                            }, 1500);
-                        }
-                        else {
-                            displayController.displayWin('x'); // game win for x
-                        }
                     }
                     else { // round win for o
                         ++wins2;
                         displayController.roundWinAnnounce('o');
-                        ++turn;
-                        displayController.updateBoard();
-                        setTimeout(() => {
-                            displayController.gmConAndHScoreBlink();
-                        }, 600);
-
-                        if (wins2 !== 2) {
-                            setTimeout(() => {
-                                displayController.turnAnnounce('x'); // next round
-                                displayController.updateScore();
-                                gameBoard.reset();
-                                displayController.updateBoard(); // clear board
-                                turn = 0;
-                            }, 1500);
-                        }
-                        else {
-                            displayController.displayWin('o'); // game win for o
-                        }
                     }
 
+                    handleRound();
                     ++roundCount;
                 }
-                else {
+                else { // nobody won round
                     ++turn;
 
-                    if (turn === 9) {
+                    if (turn === 9) { // draw case
                         displayController.drawAnnounce();
-                        displayController.updateBoard();
-                        setTimeout(() => {
-                            displayController.gmConAndHScoreBlink();
-                        }, 600);
-
-                        setTimeout(() => {
-                            displayController.turnAnnounce(getCurrSign()); // restart round
-                            gameBoard.reset();
-                            displayController.updateBoard(); // clear board
-                            turn = 0;
-                        }, 1500);
+                        handleRound();
                     }
-                    else {
+                    else { // next turn
                         displayController.turnAnnounce(getCurrSign());
                         displayController.updateBoard();
                     }
