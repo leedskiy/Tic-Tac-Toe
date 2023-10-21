@@ -98,6 +98,10 @@ const displayController = (function () {
         gameContentAnnouncement.innerHTML = `Turn of ${sign == 'x' ? 'X' : 'O'}`;
     }
 
+    const drawAnnounce = () => {
+        gameContentAnnouncement.innerHTML = `It is a draw`;
+    }
+
     const roundWinAnnounce = (sign) => {
         gameContentAnnouncement.innerHTML = `Player ${sign.toUpperCase()} won ${gameController.getRoundCount()} round`;
     }
@@ -117,7 +121,7 @@ const displayController = (function () {
         }, 500)
     }
 
-    return { updateScore, updateBoard, turnAnnounce, roundWinAnnounce, displayWin }
+    return { updateScore, updateBoard, turnAnnounce, drawAnnounce, roundWinAnnounce, displayWin }
 })();
 
 const gameController = (function () {
@@ -235,13 +239,24 @@ const gameController = (function () {
 
                     ++roundCount;
                 }
-                else if (turn === 9) {
-                    console.log("draw");
-                }
                 else {
                     ++turn;
-                    displayController.turnAnnounce(getCurrSign());
-                    displayController.updateBoard();
+
+                    if (turn === 9) {
+                        displayController.drawAnnounce();
+                        displayController.updateBoard();
+
+                        setTimeout(() => {
+                            displayController.turnAnnounce(getCurrSign()); // restart round
+                            gameBoard.reset();
+                            displayController.updateBoard(); // clear board
+                            turn = 0;
+                        }, 1500);
+                    }
+                    else {
+                        displayController.turnAnnounce(getCurrSign());
+                        displayController.updateBoard();
+                    }
                 }
             }
         }
