@@ -33,6 +33,7 @@ function createPlayer(sign) {
 };
 
 const displayController = (function () {
+    const pageTitle = document.querySelector('title');
     const headerRight = document.querySelector('.header__right');
     const headerScore = document.querySelector('.header__score');
     const scorePlayer1 = document.querySelector('.score__player1');
@@ -90,8 +91,15 @@ const displayController = (function () {
     });
 
     const updateScore = () => {
-        scorePlayer1.innerHTML = gameController.getWins()[0];
-        scorePlayer2.innerHTML = gameController.getWins()[1];
+        let wins = gameController.getWins();
+        scorePlayer1.innerHTML = wins[0];
+        scorePlayer2.innerHTML = wins[1];
+        if (wins[0] === 0 && wins[1] === 0) {
+            pageTitle.textContent = `Tic Tac Toe`;
+        }
+        else {
+            pageTitle.textContent = `Tic Tac Toe | ${wins[0]} : ${wins[1]}`;
+        }
     }
 
     const updateBoard = () => {
