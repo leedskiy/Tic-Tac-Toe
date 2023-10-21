@@ -138,7 +138,7 @@ const displayController = (function () {
 
         gameText.innerHTML = `
         <h2 class="gameText__title">
-            Tic Tac Toe
+            Congratulations!
         </h2>
         <p class="gameText__body">
             ${sign.toUpperCase()} won the game <span class="gameText__body-no-wrap">
@@ -235,7 +235,7 @@ const gameController = (function () {
     }
 
     const restartGame = () => {
-        reset()
+        reset();
         handleRound();
     }
 
