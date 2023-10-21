@@ -37,6 +37,7 @@ const displayController = (function () {
     const headerScore = document.querySelector('.header__score');
     const scorePlayer1 = document.querySelector('.score__player1');
     const scorePlayer2 = document.querySelector('.score__player2');
+    const restartButton = document.querySelector('.header__restartButton');
     const startButton = document.querySelector('.startButton');
     const gameContentAnnouncement = document.querySelector('.gameContent__announcement');
     const gameContent = document.querySelector('.gameContent');
@@ -58,6 +59,14 @@ const displayController = (function () {
     startButton.style.cssText = `transition: background-color 0.4s, opacity 0.3s;`;
     gameContent.style.cssText = `transition: opacity 1s;`;
     headerRight.style.cssText = `transition: opacity 1s;`;
+    headerScore.style.cssText = `transition: opacity 1s;`;
+
+    restartButton.addEventListener('click', (e) => {
+        gmConAndHScoreBlink();
+        setTimeout(() => {
+            gameController.restartGame();
+        }, 1000);
+    });
 
     startButton.addEventListener('click', (e) => {
         startButton.style.opacity = 0;
@@ -106,6 +115,15 @@ const displayController = (function () {
         gameContentAnnouncement.innerHTML = `Player ${sign.toUpperCase()} won ${gameController.getRoundCount()} round`;
     }
 
+    const gmConAndHScoreBlink = () => {
+        gameContent.style.opacity = 0;
+        headerScore.style.opacity = 0;
+        gameContent.addEventListener('transitionend', () => {
+            gameContent.style.opacity = 1;
+            headerScore.style.opacity = 1;
+        }, { once: true });
+    }
+
     const displayWin = (sign) => {
         setTimeout(() => {
             gameContent.style.cssText = `transition: opacity 1s;`;
@@ -121,7 +139,10 @@ const displayController = (function () {
         }, 500)
     }
 
-    return { updateScore, updateBoard, turnAnnounce, drawAnnounce, roundWinAnnounce, displayWin }
+    return {
+        updateScore, updateBoard, turnAnnounce, drawAnnounce,
+        roundWinAnnounce, gmConAndHScoreBlink, displayWin
+    }
 })();
 
 const gameController = (function () {
@@ -147,6 +168,18 @@ const gameController = (function () {
         else {
             return turn % 2 == 0 ? player2.getSign() : player1.getSign(); // get curr sign (even = o)
         }
+    }
+
+    const restartGame = () => {
+        turn = 0;
+        roundCount = 1;
+        wins1 = 0;
+        wins2 = 0;
+
+        displayController.turnAnnounce(getCurrSign());
+        displayController.updateScore();
+        gameBoard.reset();
+        displayController.updateBoard();
     }
 
     const checkWin = () => {
@@ -203,6 +236,9 @@ const gameController = (function () {
                         displayController.roundWinAnnounce('x');
                         ++turn;
                         displayController.updateBoard();
+                        setTimeout(() => {
+                            displayController.gmConAndHScoreBlink();
+                        }, 600);
 
                         if (wins1 !== 2) {
                             setTimeout(() => {
@@ -222,6 +258,9 @@ const gameController = (function () {
                         displayController.roundWinAnnounce('o');
                         ++turn;
                         displayController.updateBoard();
+                        setTimeout(() => {
+                            displayController.gmConAndHScoreBlink();
+                        }, 600);
 
                         if (wins2 !== 2) {
                             setTimeout(() => {
@@ -245,6 +284,9 @@ const gameController = (function () {
                     if (turn === 9) {
                         displayController.drawAnnounce();
                         displayController.updateBoard();
+                        setTimeout(() => {
+                            displayController.gmConAndHScoreBlink();
+                        }, 600);
 
                         setTimeout(() => {
                             displayController.turnAnnounce(getCurrSign()); // restart round
@@ -262,5 +304,5 @@ const gameController = (function () {
         }
     }
 
-    return { getRoundCount, getWins, getCurrSign, checkWin, makeAPlay }
+    return { getRoundCount, getWins, getCurrSign, restartGame, checkWin, makeAPlay }
 })();
